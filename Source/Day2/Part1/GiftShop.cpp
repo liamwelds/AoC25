@@ -41,7 +41,6 @@ long long FindSumOfInvalidIDs(long long firstID, long long lastID)
     {
         if(IDIsInvalid(i))
         {
-            // std::cout << i << '\n';
             sum += i;
         }
     }
@@ -68,14 +67,11 @@ int main()
 
         while((rangeDelimiterPosition = buffer.find(rangeDelimiter, lastRangeDelimiterPosition)) != std::string::npos)
         {
-            // std::cout << buffer.substr(lastRangeDelimiterPosition, rangeDelimiterPosition - lastRangeDelimiterPosition) << std::endl;
-
             size_t idDelimiterPosition = buffer.find(idDelimiter, lastRangeDelimiterPosition);
 
             firstIDBuffer = buffer.substr(lastRangeDelimiterPosition, idDelimiterPosition - lastRangeDelimiterPosition);
             lastIDBuffer = buffer.substr(idDelimiterPosition + 1, rangeDelimiterPosition - idDelimiterPosition - 1);
 
-            // std::cout << firstIDBuffer << ' ' << lastIDBuffer << '\n';
             sum += FindSumOfInvalidIDs(std::stoll(firstIDBuffer), std::stoll(lastIDBuffer));
 
             lastRangeDelimiterPosition = rangeDelimiterPosition + 1;
@@ -88,8 +84,6 @@ int main()
         lastIDBuffer = buffer.substr(idDelimiterPosition + 1);
 
         sum += FindSumOfInvalidIDs(std::stoll(firstIDBuffer), std::stoll(lastIDBuffer));
-
-        // std::cout << firstIDBuffer << ' ' << lastIDBuffer << '\n';
 
         std::cout << sum << '\n';
 
