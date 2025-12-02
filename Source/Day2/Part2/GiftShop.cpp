@@ -2,44 +2,55 @@
 #include <iostream>
 #include <fstream>
 
-bool IDIsInvalid(long long id)
+bool IDIsInvalid(std::string const id)
 {
     bool invalid = false;
 
-    int numberOfDigits = static_cast<int>(floor(log10(id) + 1));
-
-    if(numberOfDigits % 2 == 0)
+    for(int n = 2; n <= id.size(); n++)
     {
-        // Must have an even number to have an invalid ID
-
-        long long const highHalfID = id / pow(10, (numberOfDigits / 2));
-        long long const lowHalfID = id - highHalfID * pow(10, (numberOfDigits / 2));
-
-        if(highHalfID == lowHalfID)
+        if(id.size() % n == 0)
         {
-            invalid = true;
+            // Number of digits is divisible by n
+            std::string lastSubStr = id.substr(0, (id.size() / n));
+            std::string nextSubStr;
+
+            int i = 1;
+
+            for(; i < n; i++)
+            {
+                nextSubStr = id.substr(i * (id.size() / n), (id.size() / n));
+
+                if(lastSubStr != nextSubStr)
+                {
+                    break;
+                }
+
+                lastSubStr = nextSubStr;
+            }
+
+            if(i == n)
+            {
+                // made it all the way through the loop
+                invalid = true;
+            }
         }
-        else
+
+        if(invalid == true)
         {
-            invalid = false;
+            break;
         }
     }
-    else
-    {
-        invalid = false;
-    }
-
 
     return invalid;
 }
 
-long long FindSumOfInvalidIDs(long long firstID, long long lastID)
+long long FindSumOfInvalidIDs(std::string const firstID, std::string const lastID)
 {
     long long sum = 0;
 
-    for (long long i = firstID; i <= lastID; i++)
+    for (long long i = std::stoll(firstID); i <= std::stoll(lastID); i++)
     {
-        if(IDIsInvalid(i))
+        if(IDIsInvalid(std::to_string(i)))
         {
             sum += i;
         }
@@ -73,7 +84,7 @@ int main()
             firstIDBuffer = buffer.substr(lastRangeDelimiterPosition, idDelimiterPosition - lastRangeDelimiterPosition);
             lastIDBuffer = buffer.substr(idDelimiterPosition + 1, rangeDelimiterPosition - idDelimiterPosition - 1);
 
-            sum += FindSumOfInvalidIDs(std::stoll(firstIDBuffer), std::stoll(lastIDBuffer));
+            sum += FindSumOfInvalidIDs(firstIDBuffer, lastIDBuffer);
 
             lastRangeDelimiterPosition = rangeDelimiterPosition + 1;
         }
@@ -84,7 +95,7 @@ int main()
         firstIDBuffer = buffer.substr(lastRangeDelimiterPosition, idDelimiterPosition - lastRangeDelimiterPosition);
         lastIDBuffer = buffer.substr(idDelimiterPosition + 1);
 
-        sum += FindSumOfInvalidIDs(std::stoll(firstIDBuffer), std::stoll(lastIDBuffer));
+        sum += FindSumOfInvalidIDs(firstIDBuffer, lastIDBuffer);
 
         std::cout << sum << '\n';
 
