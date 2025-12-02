@@ -64,10 +64,11 @@ int main()
 
         size_t lastRangeDelimiterPosition = 0;
         size_t rangeDelimiterPosition = 0;
+        size_t idDelimiterPosition = 0;
 
         while((rangeDelimiterPosition = buffer.find(rangeDelimiter, lastRangeDelimiterPosition)) != std::string::npos)
         {
-            size_t idDelimiterPosition = buffer.find(idDelimiter, lastRangeDelimiterPosition);
+            idDelimiterPosition = buffer.find(idDelimiter, lastRangeDelimiterPosition);
 
             firstIDBuffer = buffer.substr(lastRangeDelimiterPosition, idDelimiterPosition - lastRangeDelimiterPosition);
             lastIDBuffer = buffer.substr(idDelimiterPosition + 1, rangeDelimiterPosition - idDelimiterPosition - 1);
@@ -77,7 +78,7 @@ int main()
             lastRangeDelimiterPosition = rangeDelimiterPosition + 1;
         }
 
-        size_t idDelimiterPosition = buffer.find(idDelimiter, lastRangeDelimiterPosition);
+        idDelimiterPosition = buffer.find(idDelimiter, lastRangeDelimiterPosition);
 
         // Get the last one
         firstIDBuffer = buffer.substr(lastRangeDelimiterPosition, idDelimiterPosition - lastRangeDelimiterPosition);
